@@ -117,7 +117,7 @@ for (year in years) {
         write_csv(rt, file = here(glue::glue('{state}/{state}_{year}_2020_block_data.csv')))
       }
 
-      log_time(here('log_time.txt'), state, year)
+      log_time(here("vest-2020/log_time.txt"), state, year)
     }
   }
 }
