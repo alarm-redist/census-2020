@@ -65,6 +65,7 @@ for (s in states) {
             summarize(av = mean(votes)) %>%
             group_by(GEOID20, party) %>%
             mutate(nv = mean(av)) %>%
+            ungroup() %>%
             # pivot back and rename nicely
             pivot_wider(names_from=year, values_from=av, names_prefix="av") %>%
             pivot_wider(names_from=party, values_from=c(nv, starts_with("av"))) %>%
@@ -72,10 +73,12 @@ for (s in states) {
             rename_with(str_replace, .cols=starts_with("av"),
                         "av(\\d+)_([dr])", "a\\2v_\\1") %>%
             mutate(ndv = round(ndv, 1),
-                   nrv = round(nrv, 1))
+                   nrv = round(nrv, 1),
+                   across(c(starts_with("adv_"), starts_with("arv_")),
+                          round, digits=1))
         state_d = left_join(state_d, vest_d, by="GEOID20")
     }
 
-    write_csv(state_d, str_glue("{joined_path}/{str_to_lower(s)}/{str_to_lower(s)}_2020_{type}.csv"))
+    write_csv(state_d, str_glue("{joined_path}/{str_to_lower(s)}_2020_{type}.csv"))
     log_time(here("census-vest-2020/log_time.txt"), s)
 }
