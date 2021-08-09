@@ -75,16 +75,16 @@ Please make sure to cite the
 and the [U.S. Census Bureau](https://www.census.gov/2020census).
 
 - For redistricting and voting rights analysis, we recommend the
-  `[redist](https://alarm-redist.github.io/redist/)` package.
+  [`redist`](https://alarm-redist.github.io/redist/) package.
 - For pre-processing and tidying data for redistricting analysis, we recommend the
-  `[geomander](https://christopherkenny.github.io/geomander/)` package.
+  [`geomander`](https://christopherkenny.github.io/geomander/) package.
 - For more custom tabulations of the 2020 census data, we recommend the
-  `[PL94171](https://corymccartan.github.io/PL94171/)` package.
+  [`PL94171`](https://corymccartan.github.io/PL94171/) package.
 - For general-purpose census data processing, we recommend the 
-  `[censable](https://christopherkenny.github.io/censable/)` package.
+  [`censable`](https://christopherkenny.github.io/censable/) package.
 - For alternate data unaffected by Census differential privacy, you may want to
   consider FCC block-level estimates, available using the
-  `[blockpop](https://corymccartan.github.io/blockpop/)` package.
+  [`blockpop`](https://corymccartan.github.io/blockpop/) package.
   
 ## Technical notes
 To produce election data using 2020 precinct boundaries, election results were
