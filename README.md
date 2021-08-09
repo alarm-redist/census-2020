@@ -76,6 +76,8 @@ wa_d = download_redistricting_file("WA", "data/") %>%
 Please make sure to cite the
 [Voting and Election Science Team](https://dataverse.harvard.edu/dataverse/electionscience)
 and the [U.S. Census Bureau](https://www.census.gov/2020census).
+Consult [the license](https://github.com/alarm-redist/census-2020/blob/main/LICENSE.md)
+for information on modifying and sharing the data and/or code.
 
 - For redistricting and voting rights analysis, we recommend the
   [`redist`](https://alarm-redist.github.io/redist/) package.
