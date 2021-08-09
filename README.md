@@ -2,6 +2,7 @@
 
 [![License: CC BY-SA 4.0](https://img.shields.io/badge/Data%20License-CC%20BY--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-sa/4.0/)
 [![License: MIT](https://img.shields.io/badge/Software%20License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+ *Christopher T. Kenny and Cory McCartan*
 
 This repository contains precinct-level demographic and election data from
 the [2020 decennial census](https://www.census.gov/2020census) and the
@@ -15,8 +16,10 @@ included; the entire workflow is open-source and reproducible.
 ## Getting the data
 
 The easiest way to get the data is to [download it from our website]().
+You can also download a ZIP of all the data by clicking the green "Code" button
+above.
 
-However, if you want to work with multiple states, or wish to join the data
+However, if you want to work with a specific set of states, or wish to join the data
 to a precinct shapefile, we have created short scripts to help you do so.
 
 ### Downloading files programmatically
