@@ -32,7 +32,7 @@ download_redistricting_file = function(abbr, folder) {
     url_block = paste0("https://raw.githubusercontent.com/alarm-redist/census-2020/",
                        "main/vest-2020/", abbr, "/", abbr, "_2020_block.csv")
     tryCatch({
-        path = paste0(folder, "/", basename(url_vtd)(
+        path = paste0(folder, "/", basename(url_vtd))
         download.file(url_vtd, path)
         path
     },
