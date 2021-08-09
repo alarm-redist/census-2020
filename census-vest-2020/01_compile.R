@@ -23,13 +23,26 @@ joined_path = here("census-vest-2020")
 for (s in states) {
     vest_files = Sys.glob(str_glue("{vest_path}/{str_to_lower(s)}/*.csv"))
 
-    if (any(str_detect(vest_files, "_block_"))) { # no VTDs
+    pl = pl_read(pl_url(s, 2020)) %>%
+        pl_select_standard(clean_names=TRUE)
+    type = "vtd"
+    state_d = pl_subset(pl, "700")
+
+    if (any(str_detect(vest_files, "_block_")) || nrow(state_d) == 0) { # no VTDs
         type = "block"
-        state_d = pl_tidy_shp(s, pl_url(s, 2020), year=2020, type="block")
-    } else {
-        type = "vtd"
-        state_d = pl_tidy_shp(s, pl_url(s, 2020), year=2020, type="vtd")
+        state_d = pl_subset(pl, "750") %>%
+            select(-vtd)
     }
+
+    fips_d = censable::fips_2020 %>%
+        left_join(select(censable::stata, fips, abb), by=c("state"="fips")) %>%
+        select(state=abb, county_code=county, county=name)
+    state_d = state_d %>%
+        select(-.data$row_id, -.data$summary_level) %>%
+        rename(county_code=county) %>%
+        left_join(tigris::fips_codes, by=c("state", "county_code")) %>%
+        select(-county_code) %>%
+        relocate(county, .after=state)
 
     if (length(vest_files) > 0) {
                  # read files
