@@ -17,8 +17,7 @@ included; the entire workflow is open-source and reproducible.
 ## Getting the data
 
 The easiest way to get the data is to [download it from our website]().
-You can also download a ZIP of all the data by clicking the green "Code" button
-above.
+You can also [download a ZIP of all the data here](https://github.com/alarm-redist/census-2020/archive/refs/heads/main.zip).
 
 However, if you want to work with a specific set of states, or wish to join the data
 to a precinct shapefile, we have created short scripts to help you do so.
