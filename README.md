@@ -94,9 +94,9 @@ and the [U.S. Census Bureau](https://www.census.gov/2020census).
 Each data table contains several identification columns, a set of census-derived
 demographic columns, and a set of VEST-derived election columns.
 
-- **GEOID20** is the unique identifier for a precinct or Census block. 
-  The **state** and **county** of the precinct or block are also provided.
-- Census variables are prefixed with **pop_** or **vap_**, depending on whether
+- `GEOID20` is the unique identifier for a precinct or Census block. 
+  The `state` and `county` of the precinct or block are also provided.
+- Census variables are prefixed with `pop_` or `vap_`, depending on whether
   they are for the entire population or the voting-age population.
   Suffixes refer to racial and ethnic categories, as follows:
   
@@ -110,12 +110,12 @@ demographic columns, and a set of VEST-derived election columns.
     * `_two`: Population of two or more races, not Hispanic or Latino
     
 - Election variables consist of average vote counts for Democratic and
-  Republican candidates. The **adv_##** and **arv_##** columns report the
-  average vote count in the **##** election, across all statewide races
-  contested by both parties. The **ndv** and **nrv** columns further average
+  Republican candidates. The `adv_##` and `arv_##` columns report the
+  average vote count in the `##` election, across all statewide races
+  contested by both parties. The `ndv` and `nrv` columns further average
   the vote counts across all available election years.  For specific statewide
   races, you may download the files in `vest-2020/` and join them to the data
-  using the **GEOID20** column.
+  using the `GEOID20` column.
   
 ## Technical notes
 To produce election data using 2020 precinct boundaries, election results were
