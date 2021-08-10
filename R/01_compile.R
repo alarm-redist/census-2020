@@ -23,8 +23,7 @@ joined_path = here("census-vest-2020")
 for (s in states) {
     vest_files = Sys.glob(str_glue("{vest_path}/{str_to_lower(s)}/*.csv"))
 
-    pl = pl_read(pl_url(s, 2020)) %>%
-        pl_select_standard(clean_names=TRUE)
+    pl = pl_read(pl_url(s, 2020))
     type = "vtd"
     state_d = pl_subset(pl, "700")
 
@@ -33,7 +32,21 @@ for (s in states) {
         state_d = pl_subset(pl, "750") %>%
             select(-vtd)
     }
-
+    
+    state_d = state_d %>%
+        transmute(GEOID20=GEOID, state=STUSAB, county=COUNTY, 
+                  row_id=LOGRECNO, summary_level=SUMLEV,
+                  pop = P0010001,
+                  pop_white = P0020005,
+                  pop_black = P0020005 + P0020013 + 0.5*(P0010004-P0020005) + 0.5*(P0010011-P0020013),
+                  pop_hisp = P0020002 + 0.5*(P0010004-P0020005) + 0.5*(P0010011-P0020013),
+                  pop_other = pop - pop_white - pop_black - pop_hisp,
+                  vap = P0030001,
+                  vap_white = P0040005,
+                  vap_black = P0040005 + P0040013 + 0.5*(P0030004-P0040005) + 0.5*(P0030011-P0420013),
+                  vap_hisp = P0040002 + 0.5*(P0030004-P0040005) + 0.5*(P0030011-P0040013),
+                  vap_other = vap - vap_white - vap_black - vap_hisp)
+                  
     fips_d = censable::fips_2020 %>%
         left_join(select(censable::stata, fips, abb), by=c("state"="fips")) %>%
         select(state=abb, county_code=county, county=name)
