@@ -47,7 +47,7 @@ for (s in states) {
     if (length(vest_files) > 0) {
                  # read files
         vest_d = map(vest_files, read_csv) %>%
-            map(~ select(., GEOID20, starts_with("G"))) %>% # gen election only
+            map(~ select(., GEOID20, starts_with("G"), starts_with("R"))) %>% # gen election only
             reduce(left_join, by="GEOID20") %>%
             # pivot and extract info from standardized col names
             pivot_longer(-GEOID20, names_to="code", values_to="votes") %>%
