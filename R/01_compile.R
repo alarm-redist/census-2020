@@ -24,14 +24,14 @@ joined_path = here("census-vest-2020")
 for (s in states) {
     vest_files = Sys.glob(str_glue("{vest_path}/{str_to_lower(s)}/*.csv"))
 
-    # DOWNLOAD PLs MANUALL!
+    # DOWNLOAD PLs MANUALLY!
     #pl = pl_read(pl_url(s, 2020)) %>%
     pl = pl_read(here(str_glue("data-raw/{str_to_lower(s)}2020.pl"))) %>%
         pl_select_standard(clean_names=TRUE)
     type = "vtd"
     state_d = pl_subset(pl, "700")
 
-    if (any(str_detect(vest_files, "_block_")) || nrow(state_d) == 0) { # no VTDs
+    if (any(str_detect(vest_files, "_block\\.csv")) || nrow(state_d) == 0) { # no VTDs
         type = "block"
         state_d = pl_subset(pl, "750") %>%
             select(-vtd)
@@ -48,8 +48,10 @@ for (s in states) {
         relocate(county, .after=state)
 
     if (length(vest_files) > 0) {
+        spec = if (type=="vtd") cols(GEOID20="c") else cols(GEOID="c")
                  # read files
-        vest_d = map(vest_files, read_csv, show_col_types=FALSE) %>%
+        vest_d = map(vest_files, read_csv, show_col_types=FALSE, col_types=spec) %>%
+            map(~ rename_with(., ~ "GEOID20", ends_with("GEOID"))) %>%
             map(~ select(., GEOID20, starts_with("G"), starts_with("R"))) %>% # gen election only
             reduce(left_join, by="GEOID20") %>%
             # pivot and extract info from standardized col names
