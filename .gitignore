@@ -4,6 +4,8 @@
 .httr-oauth
 .DS_Store
 
+data-raw/
+
 # misc
 *.bak
 *.swp

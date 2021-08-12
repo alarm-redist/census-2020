@@ -5,6 +5,7 @@ library(here)
 library(censable)
 library(dataverse)
 
+
 # helpers ----
 log_time <- function(path, state) {
     if (!fs::file_exists(path)) {
@@ -23,7 +24,9 @@ joined_path = here("census-vest-2020")
 for (s in states) {
     vest_files = Sys.glob(str_glue("{vest_path}/{str_to_lower(s)}/*.csv"))
 
-    pl = pl_read(pl_url(s, 2020)) %>%
+    # DOWNLOAD PLs MANUALL!
+    #pl = pl_read(pl_url(s, 2020)) %>%
+    pl = pl_read(here(str_glue("data-raw/{str_to_lower(s)}2020.pl"))) %>%
         pl_select_standard(clean_names=TRUE)
     type = "vtd"
     state_d = pl_subset(pl, "700")
@@ -39,14 +42,14 @@ for (s in states) {
         select(state=abb, county_code=county, county=name)
     state_d = state_d %>%
         select(-.data$row_id, -.data$summary_level) %>%
-        rename(county_code=county) %>%
+        rename(county_code=county, GEOID20=GEOID) %>%
         left_join(tigris::fips_codes, by=c("state", "county_code")) %>%
-        select(-county_code) %>%
+        select(-county_code, -state_code, -state_name) %>%
         relocate(county, .after=state)
 
     if (length(vest_files) > 0) {
                  # read files
-        vest_d = map(vest_files, read_csv) %>%
+        vest_d = map(vest_files, read_csv, show_col_types=FALSE) %>%
             map(~ select(., GEOID20, starts_with("G"), starts_with("R"))) %>% # gen election only
             reduce(left_join, by="GEOID20") %>%
             # pivot and extract info from standardized col names
