@@ -28,9 +28,9 @@ to a precinct shapefile, we have created short scripts to help you do so.
 download_redistricting_file = function(abbr, folder) {
     abbr = tolower(abbr)
     url_vtd = paste0("https://raw.githubusercontent.com/alarm-redist/census-2020/",
-                     "main/vest-2020/", abbr, "/", abbr, "_2020_vtd.csv")
+                     "main/census-vest-2020/", abbr, "_2020_vtd.csv")
     url_block = paste0("https://raw.githubusercontent.com/alarm-redist/census-2020/",
-                       "main/vest-2020/", abbr, "/", abbr, "_2020_block.csv")
+                       "main/census-vest-2020/", abbr, "_2020_block.csv")
     tryCatch({
         path = paste0(folder, "/", basename(url_vtd))
         download.file(url_vtd, path)
