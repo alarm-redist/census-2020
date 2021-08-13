@@ -31,16 +31,17 @@ download_redistricting_file = function(abbr, folder) {
                      "main/census-vest-2020/", abbr, "_2020_vtd.csv")
     url_block = paste0("https://raw.githubusercontent.com/alarm-redist/census-2020/",
                        "main/census-vest-2020/", abbr, "_2020_block.csv")
-    tryCatch({
-        path = paste0(folder, "/", basename(url_vtd))
-        download.file(url_vtd, path)
-        path
-    },
-    error = {
+
+    path = paste0(folder, "/", basename(url_vtd))
+    resp = download(url_vtd, path)
+    if (resp != 0) {
         path = paste0(folder, "/", basename(url_block))
-        download.file(url_block, path)
-        path
-    })
+        resp = download(url_block, path)
+        if (resp != 0)  {
+            stop("No files available for ", abbr)
+        }
+    }
+    path
 }
 
 # download a single state
