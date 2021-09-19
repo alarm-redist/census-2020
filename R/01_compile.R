@@ -87,4 +87,6 @@ for (s in states) {
 
   write_csv(state_d, str_glue('{joined_path}/{str_to_lower(s)}_2020_{type}.csv'))
   log_time(here('census-vest-2020/log_time.txt'), s)
+
+  fs::file_delete(fs::dir_ls(fs::path(tempdir(),'PL-unzip')))
 }
