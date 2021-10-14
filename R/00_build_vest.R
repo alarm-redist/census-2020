@@ -47,16 +47,17 @@ proc_raw_cw <- function(raw) {
 for (year in years) {
   states <- vest_states(year)
   for (state in states) {
-    fs::dir_create(here(state))
+    fs::dir_create(here('vest-2020', state))
 
-    if (!fs::file_exists(here(glue::glue('{state}/{state}_{year}_2020_block_data.csv'))) &
-      !fs::file_exists(here(glue::glue('{state}/{state}_{year}_2020_vtd_data.csv')))) {
+    if (!fs::file_exists(here(glue::glue('vest-2020/{state}/{state}_{year}_2020_block.csv'))) &
+      !fs::file_exists(here(glue::glue('vest-2020/{state}/{state}_{year}_2020_vtd.csv')))) {
 
 
       # Step 1: Match VEST precincts to 2010 Census blocks ----
       block <- tigris::blocks(state, year = 2010)
       vest <- get_vest(state = state, year = year, clean_names = FALSE) %>%
-        st_transform(st_crs(block))
+        st_transform(st_crs(block)) %>%
+        st_zm()
       match_list <- geo_match(from = block, to = vest, method = 'centroid')
       tb <- tibble(block10_vest = match_list, block_GEOID = block$GEOID10)
 
@@ -110,11 +111,11 @@ for (year in years) {
           mutate(across(where(is.numeric), round, 2))
 
         # Write to File ----
-        write_csv(vtd, file = here(glue::glue('{state}/{state}_{year}_2020_vtd_data.csv')))
+        write_csv(vtd, file = here(glue::glue('vest-2020/{state}/{state}_{year}_2020_vtd.csv')))
       } else {
         rt <- rt %>%
           mutate(across(where(is.numeric), round, digits=1))
-        write_csv(rt, file = here(glue::glue('{state}/{state}_{year}_2020_block_data.csv')))
+        write_csv(rt, file = here(glue::glue('vest-2020/{state}/{state}_{year}_2020_block.csv')))
       }
 
       log_time(here("vest-2020/log_time.txt"), state, year)

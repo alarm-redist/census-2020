@@ -112,12 +112,16 @@ demographic columns, and a set of VEST-derived election columns.
     * `_two`: Population of two or more races, not Hispanic or Latino
     
 - Election variables consist of average vote counts for Democratic and
-  Republican candidates. The `adv_##` and `arv_##` columns report the
+  Republican candidates. The `avg_##_dem` and `avg_##_rep` columns report the
   average vote count in the `##` election, across all statewide races
   contested by both parties. The `ndv` and `nrv` columns further average
-  the vote counts across all available election years.  For specific statewide
-  races, you may download the files in `vest-2020/` and join them to the data
-  using the `GEOID20` column.
+  the vote counts across all available election years. Prefixes indicate offices, as follows:
+  
+    * `pre_`: President
+    * `uss_`: United States Senate
+    * `gov_`: Governor
+    * `atg_`: Attorney General
+    * `sos_`: Secretary of State
   
 ## Technical notes
 To produce election data using 2020 precinct boundaries, election results were
