@@ -70,12 +70,18 @@ for (s in states) {
     # Average ----
     vest_d <- vest_d %>%
       mutate(
-        avg_16_rep = rowMeans(select(., contains('_16_rep_')), na.rm = TRUE),
-        avg_16_dem = rowMeans(select(., contains('_16_dem_')), na.rm = TRUE),
-        avg_18_rep = rowMeans(select(., contains('_18_rep_')), na.rm = TRUE),
-        avg_18_dem = rowMeans(select(., contains('_18_dem_')), na.rm = TRUE),
-        avg_20_rep = rowMeans(select(., contains('_20_rep_')), na.rm = TRUE),
-        avg_20_dem = rowMeans(select(., contains('_20_dem_')), na.rm = TRUE)
+        arv_16 = rowMeans(select(., contains('_16_rep_')), na.rm = TRUE),
+        adv_16 = rowMeans(select(., contains('_16_dem_')), na.rm = TRUE),
+        arv_18 = rowMeans(select(., contains('_18_rep_')), na.rm = TRUE),
+        adv_18 = rowMeans(select(., contains('_18_dem_')), na.rm = TRUE),
+        arv_20 = rowMeans(select(., contains('_20_rep_')), na.rm = TRUE),
+        adv_20 = rowMeans(select(., contains('_20_dem_')), na.rm = TRUE),
+        nrv = rowMeans(select(., contains('_rep_')), na.rm = TRUE),
+        ndv = rowMeans(select(., contains('_dem_')), na.rm = TRUE),
+        ndv = round(ndv, 1),
+        nrv = round(nrv, 1),
+        across(c(starts_with("adv_"), starts_with("arv_")),
+               round, digits=1)
       )
 
     # Round ----
