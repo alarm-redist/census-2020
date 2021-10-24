@@ -75,7 +75,7 @@ for (year in years) {
       tb <- tibble(block10_vest = match_list, block_GEOID = block$GEOID10)
 
       # Step 2: Add populations to 2010 blocks ----
-      dec <- build_dec('block', state = state, geometry = FALSE, groups = 'all') %>%
+      dec <- build_dec('block', state = state, geometry = FALSE, groups = 'all', year = 2010) %>%
         rename(block = GEOID) %>%
         select(-NAME)
 
@@ -92,7 +92,10 @@ for (year in years) {
       }
 
       # Step 4: Crosswalk election data to 2020 blocks by area ----
-      vest_cw <- read_rds(fs::path('crosswalks', state, ext = 'rds'))
+      vest_cw_raw <- read_lines(glue::glue('{unz_path}/block1020_crosswalk_{match_fips(state)}.csv'))
+      vest_cw <- proc_raw_cw(vest_cw_raw)
+      cw <- pl_crosswalk(toupper(state))
+      vest_cw <- left_join(vest_cw, select(cw, -int_land), by = c('GEOID', 'GEOID_to'))
       rt <- pl_retally(elec_at_2010, crosswalk = vest_cw)
 
       # Step 5: Aggregate to 2020 VTDs by BAFs
