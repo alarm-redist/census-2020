@@ -43,6 +43,19 @@ proc_raw_cw <- function(raw) {
   })
 }
 
+# set up crosswalks ----
+fs::dir_create('crosswalks')
+for (state in state.abb) {
+  if (!fs::file_exists('crosswalks', state, ext = 'rds')) {
+  vest_cw_raw <- read_lines(glue::glue('{unz_path}/block1020_crosswalk_{match_fips(state)}.csv'))
+  vest_cw <- proc_raw_cw(vest_cw_raw)
+  cw <- pl_crosswalk(toupper(state))
+  vest_cw <- left_join(vest_cw, select(cw, -int_land), by = c('GEOID', 'GEOID_to'))
+  saveRDS(vest_cw, file = fs::path('crosswalks', state, ext = 'rds'), compress = 'xz')
+  }
+}
+
+
 # run
 for (year in years) {
   states <- vest_states(year)
@@ -61,7 +74,7 @@ for (year in years) {
       tb <- tibble(block10_vest = match_list, block_GEOID = block$GEOID10)
 
       # Step 2: Add populations to 2010 blocks ----
-      dec <- build_dec('block', state = state, geometry = FALSE, groups = 'all') %>%
+      dec <- build_dec('block', state = state, geometry = FALSE, groups = 'all', year = 2010) %>%
         rename(block = GEOID) %>%
         select(-NAME)
 
