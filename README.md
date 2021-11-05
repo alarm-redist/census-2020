@@ -24,6 +24,24 @@ to a precinct shapefile, we have created short scripts to help you do so.
 
 ### Downloading files programmatically
 ```r
+
+#' Download a file
+#'
+#' Backend-agnostic (currently `httr`)
+#'
+#' @param url a URL
+#' @param path a file path
+#'
+#' @returns the `httr` request
+download <- function(url, path) {
+    dir <- dirname(path)
+    if (!dir.exists(dir)) dir.create(dir, recursive = TRUE)
+    if (!file.exists(path))
+        httr::GET(url = url, httr::write_disk(path))
+    else
+        list(status_code = 200)
+}
+
 # downloads data for state `abbr` to `folder/{abbr}_2020_*.csv` and returns path to file
 download_redistricting_file = function(abbr, folder) {
     abbr = tolower(abbr)
