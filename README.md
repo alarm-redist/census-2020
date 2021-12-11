@@ -31,7 +31,7 @@ to a precinct shapefile, we have created short scripts to help you do so.
 #'
 #' @param url a URL
 #' @param path a file path
-#' @param should the file at path be overwritten if it already exists? Default is FALSE.
+#' @param overwrite should the file at path be overwritten if it already exists? Default is FALSE.
 #'
 #' @returns the `httr` request
 download <- function(url, path, overwrite = FALSE) {
