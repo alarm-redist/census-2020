@@ -31,15 +31,17 @@ to a precinct shapefile, we have created short scripts to help you do so.
 #'
 #' @param url a URL
 #' @param path a file path
+#' @param should the file at path be overwritten if it already exists? Default is FALSE.
 #'
 #' @returns the `httr` request
-download <- function(url, path) {
+download <- function(url, path, overwrite = FALSE) {
     dir <- dirname(path)
     if (!dir.exists(dir)) dir.create(dir, recursive = TRUE)
-    if (!file.exists(path))
+    if (!file.exists(path) || overwrite) {
         httr::GET(url = url, httr::write_disk(path))
-    else
-        list(status_code = 200)
+    } else {
+        message(paste0("File already downloaded at", path, ". Set `overwrite = TRUE` to overwrite."))
+    }
 }
 
 # downloads data for state `abbr` to `folder/{abbr}_2020_*.csv` and returns path to file
@@ -93,7 +95,7 @@ wa_d = download_redistricting_file("WA", "data/") %>%
 ## Using the data
 
 Please make sure to cite the
-[Voting and Election Science Team](https://dataverse.harvard.edu/dataverse/electionscience)
+[Voting and Election Science Team](https://dataverse.harvard.edu/dataverse/electionscience) ([CC-4.0](https://creativecommons.org/licenses/by/4.0/))
 and the [U.S. Census Bureau](https://www.census.gov/2020census).
 Consult [the license](https://github.com/alarm-redist/census-2020/blob/main/LICENSE.md)
 for information on modifying and sharing the data and/or code.
@@ -131,16 +133,29 @@ demographic columns, and a set of VEST-derived election columns.
     
 - Election variables consist of average vote counts for Democratic and
   Republican candidates. The `adv_##` and `arv_##` columns report the
-  average vote count in the `##` election, across all statewide races
+  average vote count in the `##` year election, across all statewide races
   contested by both parties. The `ndv` and `nrv` columns further average
   the vote counts across all available election years.  For specific statewide
   races, you may download the files in `vest-2020/` and join them to the data
-  using the `GEOID20` column.
+  using the `GEOID20` column. Additional election data is provided with the following
+  naming convention: `off_yr_par_can` where:
+  
+    * `off` indicates the three letter office abbreviation. Possible choices are:
+        * `pre`: President
+        * `uss`: United States Senate
+        * `gov`: Governor
+        * `atg`: Attorney General
+        * `sos`: Secretary of State
+    * `yr` indicates the year of the election
+    * `par` inidcates the party
+        * `rep`: Republican
+        * `dem`: Democratic
+    * `can` indicates the first three letters of the candidate's last name 
   
 ## Technical notes
 To produce election data using 2020 precinct boundaries, election results were
 projected down to the 2010 block level using voting-age population as weights.
 Results for 2020 blocks were then estimated using 2010 blocks and the
 [land-use-based crosswalk files](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/T9VMJO)
-from VEST. Finally, 2020 blocks were aggregated to 2020 precincts using the 
+from VEST. Finally, 2020 blocks were aggregated to 2020 Census VTDs using the 
 Census' 2020 [block assignment files](https://www.census.gov/geographies/reference-files/time-series/geo/block-assignment-files.html).
