@@ -123,11 +123,11 @@ for (year in years) {
           mutate(across(where(is.numeric), round, 2))
 
         # Write to File ----
-        write_csv(vtd, file = here(glue::glue('{state}/{state}_{year}_2020_vtd_data.csv')))
+        write_csv(vtd, file = here(glue::glue('vest-2020/{tolower(state)}/{tolower(state)}_2020_vtd_data.csv')))
       } else {
         rt <- rt %>%
           mutate(across(where(is.numeric), round, digits=1))
-        write_csv(rt, file = here(glue::glue('{state}/{state}_{year}_2020_block_data.csv')))
+        write_csv(rt, file = here(glue::glue('vest-2020/{tolower(state)}/{tolower(state)}_{year}_2020_block_data.csv')))
       }
 
       log_time(here("vest-2020/log_time.txt"), state, year)
