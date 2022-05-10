@@ -72,10 +72,8 @@ for (year in years) {
 
 withr::deferred_clear()
 
-files <- fs::dir_ls('vest-2010', recurse = TRUE, glob = '*.csv')
-
-lapply(files, function(f) {
-    read_csv(f) %>%
-        select(-starts_with('pop'), -starts_with('vap'), -any_of('geometry')) %>%
-        write_csv(file = f)
-})
+# lapply(fs::dir_ls('vest-2010', recurse = TRUE, glob = '*.csv'), function(f) {
+#     read_csv(f) %>%
+#         select(-starts_with('pop'), -starts_with('vap'), -any_of('geometry')) %>%
+#         write_csv(file = f)
+# })
