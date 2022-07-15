@@ -20,77 +20,7 @@ The easiest way to get the data is to [download it from our website](https://ala
 You can also [download a ZIP of all the data here](https://github.com/alarm-redist/census-2020/archive/refs/heads/main.zip).
 
 However, if you want to work with a specific set of states, or wish to join the data
-to a precinct shapefile, we have created short scripts to help you do so.
-
-### Downloading files programmatically
-```r
-
-#' Download a file
-#'
-#' Backend-agnostic (currently `httr`)
-#'
-#' @param url a URL
-#' @param path a file path
-#' @param overwrite should the file at path be overwritten if it already exists? Default is FALSE.
-#'
-#' @returns the `httr` request
-download <- function(url, path, overwrite = FALSE) {
-    dir <- dirname(path)
-    if (!dir.exists(dir)) dir.create(dir, recursive = TRUE)
-    if (!file.exists(path) || overwrite) {
-        httr::GET(url = url, httr::write_disk(path))
-    } else {
-        message(paste0("File already downloaded at", path, ". Set `overwrite = TRUE` to overwrite."))
-    }
-}
-
-# downloads data for state `abbr` to `folder/{abbr}_2020_*.csv` and returns path to file
-download_redistricting_file = function(abbr, folder) {
-    abbr = tolower(abbr)
-    url_vtd = paste0("https://raw.githubusercontent.com/alarm-redist/census-2020/",
-                     "main/census-vest-2020/", abbr, "_2020_vtd.csv")
-    url_block = paste0("https://raw.githubusercontent.com/alarm-redist/census-2020/",
-                       "main/census-vest-2020/", abbr, "_2020_block.csv")
-
-    path = paste0(folder, "/", basename(url_vtd))
-    resp = download(url_vtd, path)
-    if (resp != 0) {
-        path = paste0(folder, "/", basename(url_block))
-        resp = download(url_block, path)
-        if (resp != 0)  {
-            stop("No files available for ", abbr)
-        }
-    }
-    path
-}
-
-# download a single state
-download_redistricting_file("WA", "data/")
-# or multiple states
-lapply(c("IA", "MT", "MA"), download_redistricting_file, folder="data/")
-```
-
-### Adding shapefile geometry to the data
-```r
-library(PL94171)
-library(dplyr)
-library(readr)
-library(sf)
-
-# adds precinct shapefile geometry to downloaded data 
-# replace `pl_get_vtd()` with `tigris::blocks()` for block data
-join_shapefile = function(data) {
-    geom_d = pl_get_vtd(data$state[1]) %>%
-        select(GEOID20, area_land=ALAND20, area_water=AWATER20, geometry)
-    left_join(data, geom_d, by="GEOID20") %>%
-        st_as_sf()
-}
-
-# download, read, and add shapefile
-wa_d = download_redistricting_file("WA", "data/") %>%
-    read_csv() %>%
-    join_shapefile()
-```
+to a precinct shapefile, you can use the **[`alarmdata`](https://alarm-redist.github.io/alarmdata/) package**.
 
 ## Using the data
 
