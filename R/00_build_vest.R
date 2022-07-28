@@ -46,7 +46,7 @@ proc_raw_cw <- function(raw) {
 # set up crosswalks ----
 fs::dir_create('crosswalks')
 for (state in state.abb) {
-  if (!fs::file_exists('crosswalks', state, ext = 'rds')) {
+  if (!fs::file_exists(fs::path('crosswalks', state, ext = 'rds'))) {
   vest_cw_raw <- read_lines(glue::glue('{unz_path}/block1020_crosswalk_{match_fips(state)}.csv'))
   vest_cw <- proc_raw_cw(vest_cw_raw)
   cw <- pl_crosswalk(toupper(state))
