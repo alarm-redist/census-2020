@@ -36,7 +36,7 @@ states <- censable::stata %>%
 vest_path <- here('vest-2010')
 joined_path <- here('census-vest-2010')
 
-for (s in states[49:50]) {
+for (s in states) {
     vest_files <- Sys.glob(str_glue('{vest_path}/{str_to_lower(s)}/*.csv'))
 
     # check that the state has vtds ----
