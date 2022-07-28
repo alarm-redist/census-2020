@@ -36,7 +36,7 @@ states <- censable::stata %>%
 vest_path <- here('vest-2010')
 joined_path <- here('census-vest-2010')
 
-for (s in states) {
+for (s in states[49:50]) {
     vest_files <- Sys.glob(str_glue('{vest_path}/{str_to_lower(s)}/*.csv'))
 
     # check that the state has vtds ----
@@ -93,7 +93,8 @@ for (s in states) {
             ndv = round(ndv, 1),
             nrv = round(nrv, 1),
             across(c(starts_with("adv_"), starts_with("arv_")),
-                   round, digits=1)
+                   round, digits=1),
+
         )
 
     # Round ----
@@ -107,7 +108,7 @@ for (s in states) {
     state_d <- state_d %>% left_join(vtds, by = c('GEOID'))
 
     state_d <- state_d %>%
-        select(state, county, vtd, starts_with(c('pop', 'vap', 'pre', 'uss', 'gov', 'atg', 'sos', 'adv', 'arv'))) %>%
+        select(state, county, vtd, starts_with(c('pop', 'vap', 'pre', 'uss', 'gov', 'atg', 'sos', 'adv', 'arv', 'ndv', 'nrv'))) %>%
         group_by(county, vtd) %>%
         summarize(
             state = state[1],
