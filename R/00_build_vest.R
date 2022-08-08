@@ -60,10 +60,10 @@ for (state in state.abb) {
 for (year in years) {
   states <- vest_states(year)
   for (state in states) {
-    fs::dir_create(here(state))
+    fs::dir_create(here('vest-2020', state))
 
-    if (!fs::file_exists(here(glue::glue('{state}/{state}_{year}_2020_block_data.csv'))) &
-      !fs::file_exists(here(glue::glue('{state}/{state}_{year}_2020_vtd_data.csv')))) {
+    if (!fs::file_exists(here(glue::glue('vest-2020/{state}/{state}_{year}_2020_block_data.csv'))) &
+      !fs::file_exists(here(glue::glue('vest-2020/{state}/{state}_{year}_2020_vtd_data.csv')))) {
 
 
       # Step 1: Match VEST precincts to 2010 Census blocks ----
