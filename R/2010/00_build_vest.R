@@ -38,7 +38,7 @@ for (year in years) {
 
             # Step 1: Get 2010 Census blocks ----
             block <- build_dec('block', state = state, groups = 'all', year = 2010) %>%
-                select(-NAME) %>%
+                #select(-NAME) %>%
                 st_transform(3875)
             vest <- get_vest(state = state, year = year, clean_names = FALSE) %>%
                 st_transform(st_crs(block))
@@ -48,8 +48,8 @@ for (year in years) {
 
             # Step 3: Estimate election data down to 2010 blocks ----
             elec_at_2010 <- block %>%
-                as_tibble(-any_of('geometry')) %>%
-                select(starts_with('GEOID'))
+                as_tibble() %>%
+                select(starts_with('GEOID'), -any_of('geometry'))
             elections <- names(vest)[str_detect(names(vest), str_c('G', year - 2000)) |
                                          str_detect(names(vest), str_c('R', year - 2000))]
             for (election in elections) {
