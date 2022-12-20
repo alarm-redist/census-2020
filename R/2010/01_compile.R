@@ -41,7 +41,7 @@ for (s in states) {
 
     # check that the state has vtds ----
     vtds <- download_2010_baf(s)
-    if (is.null(vtds)) break
+    if (is.null(vtds)) break# type <- 'block'
     type <- 'vtd'
     vtds <- vtds %>%
         transmute(
@@ -107,16 +107,22 @@ for (s in states) {
 
     state_d <- state_d %>% left_join(vtds, by = c('GEOID'))
 
-    state_d <- state_d %>%
-        select(state, county, vtd, starts_with(c('pop', 'vap', 'pre', 'uss', 'gov', 'atg', 'sos', 'adv', 'arv', 'ndv', 'nrv'))) %>%
-        group_by(county, vtd) %>%
-        summarize(
-            state = state[1],
-            across(where(is.numeric), sum),
-            .groups = 'drop'
-        ) %>%
-        relocate(state, .before = everything())
+    if (type == 'vtd') {
+        state_d <- state_d %>%
+            select(state, county, vtd, starts_with(c('pop', 'vap', 'pre', 'uss', 'gov', 'atg', 'sos', 'adv', 'arv', 'ndv', 'nrv'))) %>%
+            group_by(county, vtd) %>%
+            summarize(
+                state = state[1],
+                across(where(is.numeric), sum),
+                .groups = 'drop'
+            ) %>%
+            relocate(state, .before = everything())
+        write_csv(state_d, str_glue('{joined_path}/{str_to_lower(s)}_2010_{type}.csv'))
+    } else {
+        state_d <- state_d %>%
+            select(state, county, vtd, starts_with(c('pop', 'vap', 'pre', 'uss', 'gov', 'atg', 'sos', 'adv', 'arv', 'ndv', 'nrv')))
+        write_csv(state_d, str_glue('{joined_path}/{str_to_lower(s)}_2010_{type}.csv'))
+    }
 
-    write_csv(state_d, str_glue('{joined_path}/{str_to_lower(s)}_2010_{type}.csv'))
     log_time(here('census-vest-2010/log_time.txt'), s)
 }
