@@ -120,7 +120,7 @@ for (s in states) {
         write_csv(state_d, str_glue('{joined_path}/{str_to_lower(s)}_2010_{type}.csv'))
     } else {
         state_d <- state_d %>%
-            select(state, county, vtd, starts_with(c('pop', 'vap', 'pre', 'uss', 'gov', 'atg', 'sos', 'adv', 'arv', 'ndv', 'nrv')))
+            select(GEOID, state, county, vtd, starts_with(c('pop', 'vap', 'pre', 'uss', 'gov', 'atg', 'sos', 'adv', 'arv', 'ndv', 'nrv')))
         write_csv(state_d, str_glue('{joined_path}/{str_to_lower(s)}_2010_{type}.csv'))
     }
 
