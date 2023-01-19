@@ -74,9 +74,9 @@ for (year in years) {
       tb <- tibble(block10_vest = match_list, block_GEOID = block$GEOID10)
 
       # Step 2: Add populations to 2010 blocks ----
-      dec <- build_dec('block', state = state, geometry = FALSE, groups = 'all', year = 2010) %>%
-        rename(block = GEOID) %>%
-        select(-NAME)
+      dec <- build_dec('block', state = state, geometry = FALSE, groups = 'all', year = 2010) #%>%
+        #rename(block = GEOID) %>%
+        #select(-NAME)
 
       # Step 3: Estimate election data down to 2010 blocks ----
       elec_at_2010 <- tibble(GEOID = block$GEOID10)

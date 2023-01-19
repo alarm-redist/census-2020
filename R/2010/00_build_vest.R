@@ -28,7 +28,7 @@ years <- c(2016, 2018, 2020)
 # run
 for (year in years) {
     states <- vest_states(year)
-    states <- states[states != 'ca']
+    states <- intersect(states, state.abb)
     for (state in states) {
         fs::dir_create(here('vest-2010', state))
 
