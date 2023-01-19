@@ -41,8 +41,12 @@ for (s in states) {
 
     # check that the state has vtds ----
     vtds <- download_2010_baf(s)
-    if (is.null(vtds)) break# type <- 'block'
-    type <- 'vtd'
+    if (is.null(vtds)) {
+        type <- 'block'
+    } else {
+        type <- 'vtd'
+    }
+
     vtds <- vtds %>%
         transmute(
             GEOID = as.character(BLOCKID),
