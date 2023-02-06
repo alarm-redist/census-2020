@@ -97,7 +97,7 @@ for (s in states) {
             ndv = round(ndv, 1),
             nrv = round(nrv, 1),
             across(c(starts_with("adv_"), starts_with("arv_")),
-                   round, digits=1),
+                   \(x) round(x, digits = 1)),
 
         )
 
