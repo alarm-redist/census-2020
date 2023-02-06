@@ -41,7 +41,7 @@ for (s in states) {
 
     # check that the state has vtds ----
     vtds <- download_2010_baf(s)
-    if (is.null(vtds)) {
+    if (is.null(vtds) || all(is.na(vtds$DISTRICT))) {
         type <- 'block'
     } else {
         type <- 'vtd'
