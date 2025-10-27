@@ -32,7 +32,7 @@ for (s in states) {
   state_d <- pl_subset(pl, '700')
 
   # check that the state has vtds ----
-  if (any(str_detect(vest_files, '_block\\.csv')) || nrow(state_d) == 0) { # no VTDs
+  if (any(str_detect(vest_files, '_block_data\\.csv')) || nrow(state_d) == 0) { # no VTDs
     type <- 'block'
     state_d <- pl_subset(pl, '750') %>%
       select(-vtd)
